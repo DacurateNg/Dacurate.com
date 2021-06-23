@@ -1,0 +1,43 @@
+html {
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+* {
+  outline: none;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  transition: 0.3s ease all;
+  font-family: "Montserrat", sans-serif;
+}
+
+a{
+  outline: none;
+  text-decoration: none !important;
+  color: inherit;
+}
+
+body .react-tabs__tab-list {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* body .owl-item{
+  width: unset !important;
+} */
+#contained-modal-title-vcenter ~ button.close {
+  display: none;
+}
+
+@media all and (max-width: 996px) {
+  body .react-tabs__tab-list {
+    flex-direction: column;
+  }
+}
+
+@media all and (max-width: 772px) {
+  .reverse-white > p {
+    color: #19456b !important;
+  }
+}
