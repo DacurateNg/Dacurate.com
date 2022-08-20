@@ -8,6 +8,11 @@ import { colors } from "../../jss/colors";
 import FAQ from "./components/Faq";
 import Hero from "./components/Hero";
 import NavCards from "./components/NavCards";
+import ReactGA from "react-ga";
+
+// *******Google Analytics ***********//
+const TRACKING_ID = "UA-185663476-1"; // OUR_TRACKING_ID
+ReactGA.initialize(TRACKING_ID);
 
 export default function GovernmentArms() {
   return (
@@ -21,7 +26,10 @@ export default function GovernmentArms() {
               <Text size="25" mb="9px" weight="500">
                 You seek to get relevant interactive data, here you are
               </Text>
-              <Text mb="15px">In one click, you will get confirmed interactive data on politics</Text>
+              <Text mb="15px">
+                In one click, you will get confirmed interactive data on
+                politics
+              </Text>
             </Col>
             <CustomButton m="15px" mt="0px" background="white" color="text">
               Request

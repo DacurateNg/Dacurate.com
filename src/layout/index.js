@@ -8,7 +8,7 @@ export default function Layout({ headless, children }) {
   const history = useHistory();
   const [links] = useState([
     { link: "/", title: "Home" },
-    { link: "/#what-do-we-offer", title: "About" },
+    // { link: "/#what-do-we-offer", title: "About" },
     { link: "/government-arms", title: "Government Arms" },
     { link: "/#election-insight", title: "Elections insight" },
     { link: "/contact", title: "Contact" },

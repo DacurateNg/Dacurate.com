@@ -3,10 +3,17 @@ import { HashLink as Link } from "react-router-hash-link";
 import styled from "styled-components";
 import CustomButton from "../Button/Button";
 import Text from "../Typography/Text";
-import { FaFacebookF, FaInstagram, FaLinkedinIn, FaTwitter } from "react-icons/fa";
+import {
+  FaFacebookF,
+  FaInstagram,
+  FaLinkedinIn,
+  FaTwitter,
+} from "react-icons/fa";
 import { VscChromeClose } from "react-icons/vsc";
 import { colors } from "../../jss/colors";
 import Logo from "../Logo";
+import ReactGA from "react-ga";
+import useAnalyticsEventTracker from "../../Analytics/useAnalyticsEventTracker";
 
 const Nav = styled.div`
   width: 100%;
@@ -147,7 +154,17 @@ const HideMobile = styled.div`
   }
 `;
 
-export default function Navbar({ showMenu, setShowMenu, links, dash, notFixed }) {
+// *******Google Analytics ***********//
+const TRACKING_ID = "UA-185663476-1"; // OUR_TRACKING_ID
+ReactGA.initialize(TRACKING_ID);
+
+export default function Navbar({
+  showMenu,
+  setShowMenu,
+  links,
+  dash,
+  notFixed,
+}) {
   const [fixed, setFixed] = useState(false);
 
   window.addEventListener("scroll", () => {
@@ -157,27 +174,41 @@ export default function Navbar({ showMenu, setShowMenu, links, dash, notFixed })
       setFixed(false);
     }
   });
+  const gaEventTracker = useAnalyticsEventTracker("Navitems");
+
   return (
     <Nav fixed={fixed} notFixed={notFixed}>
       <div>
         <Row dash={dash}>
           <div className="logo">
-            <a href="/">
+            <a href="/" onClick={() => gaEventTracker("homePage")}>
               <Logo />
             </a>
           </div>
           <ShowMobile>
             <Row style={{ margin: 0 }}>
-              <IconWrapper href="https://www.twitter.com/">
+              <IconWrapper
+                href="https://www.twitter.com/"
+                onClick={() => gaEventTracker("twitter")}
+              >
                 <FaTwitter />
               </IconWrapper>
-              <IconWrapper href="https://www.linkedin.com/">
+              <IconWrapper
+                href="https://www.linkedin.com/"
+                onClick={() => gaEventTracker("linkedin")}
+              >
                 <FaLinkedinIn />
               </IconWrapper>
-              <IconWrapper href="https://www.facebook.com/">
+              <IconWrapper
+                href="https://www.facebook.com/"
+                onClick={() => gaEventTracker("facebook")}
+              >
                 <FaFacebookF />
               </IconWrapper>
-              <IconWrapper href="https://www.instagram.com/">
+              <IconWrapper
+                href="https://www.instagram.com/"
+                onClick={() => gaEventTracker("instagram")}
+              >
                 <FaInstagram />
               </IconWrapper>
             </Row>
@@ -185,22 +216,67 @@ export default function Navbar({ showMenu, setShowMenu, links, dash, notFixed })
           {links !== undefined && (
             <NavLinks dash={dash} open={showMenu}>
               {showMenu && (
-                <Toggle onClick={() => setShowMenu(false)} style={{ marginLeft: "auto", marginBottom: 20 }}>
+                <Toggle
+                  onClick={() => setShowMenu(false)}
+                  style={{ marginLeft: "auto", marginBottom: 20 }}
+                >
                   <VscChromeClose color={colors.danger} />
                 </Toggle>
               )}
+
               {links.map((item, index) => (
-                <LinkItem dash={dash} onClick={() => setShowMenu(false)} key={index}>
+                <LinkItem
+                  dash={dash}
+                  onClick={() => setShowMenu(false)}
+                  key={index}
+                >
                   {item.link === undefined ? (
                     <div>
                       {item.type === "btn" ? (
-                        <HideMobile>
-                          <CustomButton outline={item.outline} success onClick={item.onClick}>
-                            {item.title}
-                          </CustomButton>
-                        </HideMobile>
+                        <Row>
+                          {/* candidates button to link out of the homepage to candidates subdomain   "START" */}
+                          {/* <LinkText> */}
+                          <a
+                            href="https://candidates.dacurate.com"
+                            onClick={() => gaEventTracker("candidates")}
+                            style={{
+                              margin: "0 30px 0 0",
+                            }}
+                          >
+                            <Text
+                              navlnk
+                              className="link"
+                              weight={700}
+                              size={dash !== undefined && 18}
+                            >
+                              Candidates
+                            </Text>
+                          </a>
+                          {/* </LinkText> */}
+                          {/* candidates button to link out of the homepage  to candidates subdomain "END" */}
+
+                          <HideMobile>
+                            <a
+                              href="https://www.donate.dacurate.com/donate/"
+                              onClick={() => gaEventTracker("donate")}
+                            >
+                              <CustomButton
+                                outline={item.outline}
+                                success
+                                // onClick={item.onClick}
+                              >
+                                {item.title}
+                              </CustomButton>
+                            </a>
+                          </HideMobile>
+                        </Row>
                       ) : (
-                        <Text navink className="link" weight={700} size={dash !== undefined && 20}>
+                        <Text
+                          navink
+                          className="link"
+                          weight={700}
+                          size={dash !== undefined && 20}
+                        >
                           {item.title}
                         </Text>
                       )}
@@ -208,15 +284,28 @@ export default function Navbar({ showMenu, setShowMenu, links, dash, notFixed })
                   ) : (
                     <LinkText to={item.link}>
                       {item.type === "btn" ? (
-                        <HideMobile>
-                          <CustomButton outline={item.outline} onClick={item.onClick}>
+                        <HideMobile onClick={() => gaEventTracker(item.title)}>
+                          <CustomButton
+                            outline={item.outline}
+                            onClick={item.onClick}
+                          >
                             {item.title}
                           </CustomButton>
                         </HideMobile>
                       ) : (
                         <Row>
-                          {dash !== undefined && item.icon !== undefined && <item.icon className="icon" style={{ marginRight: 10, fontSize: 24 }} />}
-                          <Text navlnk className="link" weight={700} size={dash !== undefined && 18}>
+                          {dash !== undefined && item.icon !== undefined && (
+                            <item.icon
+                              className="icon"
+                              style={{ marginRight: 10, fontSize: 24 }}
+                            />
+                          )}
+                          <Text
+                            navlnk
+                            className="link"
+                            weight={700}
+                            size={dash !== undefined && 18}
+                          >
                             {item.title}
                           </Text>
                         </Row>

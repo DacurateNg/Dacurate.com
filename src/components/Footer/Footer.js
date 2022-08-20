@@ -11,6 +11,7 @@ import {
   FaLinkedinIn,
   FaTwitter,
 } from "react-icons/fa";
+import useAnalyticsEventTracker from "../../Analytics/useAnalyticsEventTracker";
 
 const IconWrapper = styled.a`
   width: 30px;
@@ -44,6 +45,8 @@ const FooterWrapper = styled.footer`
 `;
 
 export default function Footer({ children, logged }) {
+  const gaEventTracker = useAnalyticsEventTracker("footer buttons");
+
   return (
     <FooterWrapper>
       <Section background="primary" pt="30px" pb="25px">
@@ -60,16 +63,28 @@ export default function Footer({ children, logged }) {
                 Social Media
               </Text>
               <Row style={{ margin: 0 }}>
-                <IconWrapper href="https://twitter.com/dacurateinsight">
+                <IconWrapper
+                  href="https://twitter.com/dacurateinsight"
+                  onClick={() => gaEventTracker("twitter")}
+                >
                   <FaTwitter />
                 </IconWrapper>
-                <IconWrapper href="https://www.linkedin.com/company/dacurate-insights">
+                <IconWrapper
+                  href="https://www.linkedin.com/company/dacurate-insights"
+                  onClick={() => gaEventTracker("linkedin")}
+                >
                   <FaLinkedinIn />
                 </IconWrapper>
-                <IconWrapper href="https://www.facebook.com/">
+                <IconWrapper
+                  href="https://www.facebook.com/"
+                  onClick={() => gaEventTracker("facebook")}
+                >
                   <FaFacebookF />
                 </IconWrapper>
-                <IconWrapper href="https://www.instagram.com/">
+                <IconWrapper
+                  href="https://www.instagram.com/"
+                  onClick={() => gaEventTracker("instagram")}
+                >
                   <FaInstagram />
                 </IconWrapper>
               </Row>
@@ -85,7 +100,10 @@ export default function Footer({ children, logged }) {
                 Do you have a Question?
               </Text>
 
-              <a href="mailto:info@dacurate.com">
+              <a
+                href="mailto:info@dacurate.com"
+                onClick={() => gaEventTracker("ask a question")}
+              >
                 <CustomButton background="text">Click Here</CustomButton>
               </a>
             </Col>
@@ -114,7 +132,12 @@ export default function Footer({ children, logged }) {
                   <Text white weight="500" size="20" mb="40px">
                     Want to Help Improve this Site?
                   </Text>
-                  <CustomButton background="success">Donate</CustomButton>
+                  <a
+                    href="https://www.donate.dacurate.com/donate/"
+                    onClick={() => gaEventTracker("donate")}
+                  >
+                    <CustomButton background="success">Donate</CustomButton>
+                  </a>
                 </Col>
               </Row>
             </Col>

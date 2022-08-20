@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { FaEnvelope, FaFacebookF, FaInstagram, FaLinkedinIn, FaTwitter } from "react-icons/fa";
+import {
+  FaEnvelope,
+  FaFacebookF,
+  FaInstagram,
+  FaLinkedinIn,
+  FaTwitter,
+} from "react-icons/fa";
 import { FiPhoneCall } from "react-icons/fi";
 import { colors } from "../../jss/colors";
 import Navbar from "../Navbar/Navbar";
@@ -8,6 +14,8 @@ import { Row } from "react-bootstrap";
 import Text from "../Typography/Text";
 import { FaBars } from "react-icons/fa";
 import CustomButton from "../Button/Button";
+import ReactGA from "react-ga";
+import useAnalyticsEventTracker from "../../Analytics/useAnalyticsEventTracker";
 
 const HeaderWrapper = styled.div`
   @media all and (max-width: 996px) {
@@ -133,9 +141,16 @@ export const HideSm = styled.div`
     display: none;
   }
 `;
+
+// *******Google Analytics ***********//
+const TRACKING_ID = "UA-185663476-1"; // OUR_TRACKING_ID
+ReactGA.initialize(TRACKING_ID);
+
 function Header(props) {
   const { links, notFixed, dash } = props;
   const [showMenu, setShowMenu] = useState(false);
+  const gaEventTracker = useAnalyticsEventTracker("Header");
+
   return (
     <HeaderWrapper>
       <TopHeader>
@@ -145,23 +160,38 @@ function Header(props) {
 
         <HideMobile>
           <Row style={{ margin: 0 }}>
-            <IconWrapper href="https://twitter.com/dacurateinsight">
+            <IconWrapper
+              href="https://twitter.com/dacurateinsight"
+              onClick={() => gaEventTracker("twitter")}
+            >
               <FaTwitter />
             </IconWrapper>
-            <IconWrapper href="https://www.linkedin.com/company/dacurate-insights">
+            <IconWrapper
+              href="https://www.linkedin.com/company/dacurate-insights"
+              onClick={() => gaEventTracker("linkedin")}
+            >
               <FaLinkedinIn />
             </IconWrapper>
-            <IconWrapper href="https://www.facebook.com/">
+            <IconWrapper
+              href="https://www.facebook.com/"
+              onClick={() => gaEventTracker("facebook")}
+            >
               <FaFacebookF />
             </IconWrapper>
-            <IconWrapper href="https://www.instagram.com/">
+            <IconWrapper
+              href="https://www.instagram.com/"
+              onClick={() => gaEventTracker("instagram")}
+            >
               <FaInstagram />
             </IconWrapper>
           </Row>
         </HideMobile>
         <HideSm>
           <ContactWrapper className="p-c-wrapper" style={{ margin: 0 }}>
-            <ContactWrapper style={{ marginRight: 20 }}>
+            <ContactWrapper
+              style={{ marginRight: 20 }}
+              onClick={() => gaEventTracker("phonenumber")}
+            >
               <FiPhoneCall />
               <Text white ml="5px" mb="0px" size="15" weight="300">
                 +234 816 720 8963
@@ -170,7 +200,10 @@ function Header(props) {
 
             <ContactWrapper style={{ margin: 0 }}>
               <FaEnvelope />
-              <a href="mailto:info@dacurate.com">
+              <a
+                href="mailto:info@dacurate.com"
+                onClick={() => gaEventTracker("mail")}
+              >
                 <Text white ml="5px" mb="0px" size="15" weight="300">
                   info@dacurate.com
                 </Text>
@@ -178,12 +211,18 @@ function Header(props) {
             </ContactWrapper>
           </ContactWrapper>
         </HideSm>
-        <ShowMobile>
+        <ShowMobile onClick={() => gaEventTracker("donateButton")}>
           <Btn background="success">Donate</Btn>
         </ShowMobile>
       </TopHeader>
       <div style={{ width: "100%" }}>
-        <Navbar dash={dash} setShowMenu={setShowMenu} showMenu={showMenu} notFixed={notFixed} links={links} />
+        <Navbar
+          dash={dash}
+          setShowMenu={setShowMenu}
+          showMenu={showMenu}
+          notFixed={notFixed}
+          links={links}
+        />
       </div>
     </HeaderWrapper>
   );
